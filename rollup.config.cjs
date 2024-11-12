@@ -1,24 +1,23 @@
-import babel from "@rollup/plugin-babel"
-import json from "@rollup/plugin-json"
-import pkg from "./package.json" assert { "type": "json" }
-import serve from "rollup-plugin-serve"
-import license from "rollup-plugin-license"
-import terser from "@rollup/plugin-terser"
-import csso from "./locales-src/rollup-optimized-css-text.js"
+const babel = require("@rollup/plugin-babel");
+const json = require("@rollup/plugin-json");
+const pkg = require("./package.json");
+const serve = require("rollup-plugin-serve");
+const license = require("rollup-plugin-license");
+const terser = require("@rollup/plugin-terser");
 
-let { buildTarget } = process.env
+let { buildTarget } = process.env;
 
 if (typeof buildTarget === "undefined") {
-  console.log('buildTarget undefined - setting to "DEV"')
-  buildTarget = "DEV"
+  console.log('buildTarget undefined - setting to "DEV"');
+  buildTarget = "DEV";
 }
 
-console.log(`buildTarget: ${buildTarget}`)
+console.log(`buildTarget: ${buildTarget}`);
 
 const env = {
   dev: buildTarget === "DEV",
   prod: buildTarget === "PROD",
-}
+};
 
 const bannerText = `
 <%= pkg.name %> v<%= pkg.version %>
@@ -27,12 +26,16 @@ const bannerText = `
 
 Copyright 2013–<%= moment().format('YYYY') %>, <%= pkg.author %>
 @license <%= pkg.license %>
-`.trim()
+`.trim();
 
 const commonPreBabelOperations = isLocale => [
-  isLocale ? undefined : csso({ minify: env.prod }),
+  isLocale
+    ? undefined
+    : import('./locales-src/rollup-optimized-css-text.js').then(module =>
+        module.default({ minify: env.prod })
+      ),
   isLocale ? json() : undefined,
-]
+];
 
 const commonPostBabelOperations = isModule => [
   env.prod &&
@@ -41,18 +44,18 @@ const commonPostBabelOperations = isModule => [
         comments: false,
       },
       compress: {
-        unsafe: true, // Safe to turn on in most cases. This just means String(a) becomes "" + a
-        unsafe_arrows: isModule, // Safe to turn on, unless there is an empty ES5 class declaration
-        unsafe_math: true, // Safe to turn on, floating point math error is minor
+        unsafe: true,
+        unsafe_arrows: isModule,
+        unsafe_math: true,
       },
     }),
   license({
     sourcemap: true,
     banner: bannerText,
   }),
-]
+];
 
-export default [
+module.exports = [
   {
     input: "browser.js",
     output: {
@@ -81,7 +84,6 @@ export default [
     },
     plugins: [
       ...commonPreBabelOperations(),
-      // ESM bundle does not need Babel
       ...commonPostBabelOperations(true),
       env.dev &&
         serve({
@@ -143,4 +145,4 @@ export default [
       ...commonPostBabelOperations(true),
     ],
   },
-]
+];

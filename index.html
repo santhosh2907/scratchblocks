@@ -235,8 +235,8 @@ function objUpdated() {
     scale: 1
   });
   var svg3HighContrast = docView3HighContrast.render();
-  var svg3 = docView3.render();
-  var svg2 = docView2.render();
+  // var svg3 = docView3.render();
+  // var svg2 = docView2.render();
   preview.innerHTML = "";
   preview.appendChild(svg3HighContrast);
   preview.appendChild(svg3);
@@ -320,6 +320,11 @@ function showDiff(e) {
 }
 document.addEventListener('keydown', showDiff);
 document.addEventListener('keyup', showDiff);
+
+scratchblocks.renderMatching('pre.scratchblocks', {
+    style: 'scratch3',  // Use Scratch 3 style, adjust if needed
+    languages: ['en']   // Set language if needed
+});
 
 </script>
 

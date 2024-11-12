@@ -324,6 +324,21 @@ export default class SVG {
     )
   }
 
+  static customCommentRect(w, h, props) {
+    const outerRect = SVG.roundRect(w, h, { ...props, class: "custom-comment-block-outer" });
+    const innerRect = SVG.roundRect(w - 10, h - 10, {
+      x: 5,
+      y: 5,
+      class: "custom-comment-block-inner"
+    });
+    const connector = SVG.path({
+      d: `M ${w - 5} ${h / 2 - 5} L ${w - 5 + 10} ${h / 2} L ${w - 5} ${h / 2 + 5}`,  // A small triangle path as connector
+      class: "custom-comment-connector"
+    });
+
+    return SVG.group([outerRect, innerRect, connector]);
+  }
+
   static strikethroughLine(w, props) {
     return SVG.path({
       ...props,

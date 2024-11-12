@@ -42,7 +42,38 @@ const commonOverride = `
   font: 400 12pt Helvetica Neue, Helvetica, sans-serif;
   fill: #000;
   word-spacing: 0;
-}`
+}
+.custom-comment-block-outer {
+    fill: #d0d1d2;           /* Light gray outer background */
+    stroke: #a8a9aa;         /* Slightly darker gray border */
+    stroke-width: 1;
+    border-radius: 6px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);  /* Soft shadow for raised effect */
+}
+
+.custom-comment-block-inner {
+    fill: #ffffff;           /* White background for the inner rectangle */
+    stroke: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+}
+
+.custom-comment-connector {
+    fill: #a8a9aa;           /* Match the border color */
+    stroke: none;
+}
+.custom-comment-block-inner text {
+    font: bold 12pt Helvetica Neue, Helvetica, sans-serif;
+    fill: #333333;           /* Dark text color for readability */
+    text-anchor: middle;
+    alignment-baseline: middle;
+}
+.sb3-custom-comments {
+    fill: #d0d1d2;           /* Light gray outer background */
+    stroke: #a8a9aa;         /* Border color */
+    border-radius: 6px;
+}
+`
 
 const createRule = (category, name, style) => `
 svg${name} .sb3-${category} {

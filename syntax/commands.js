@@ -1689,4 +1689,11 @@ export default [
     shape: "stack",
     category: "boost",
   },
+  {
+    id: "CUSTOM_COMMENT_BLOCK",
+    spec: "note %1",        // Syntax like "note [text]"
+    inputs: ["%s"],         // Takes a string input for the comment text
+    shape: "stack",         // Stack shape to attach to other blocks
+    category: "custom-comments"
+  }
 ]
